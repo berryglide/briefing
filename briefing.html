@@ -3,9 +3,9 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Dev briefing MTO LFEK</title>
+	<title>Dev briefing LFEK</title>
 
-	<meta name="description" content="Une collecte automatique de données météo, extrait de ce qu'on peut trouver sur http://www.volavoile.net/index.php?showtopic=12194 et adapté pour Issoudun LFEK.">
+	<meta name="description" content="Une collecte automatique de données météo et infos aeronautiques, extrait de ce qu'on peut trouver sur http://www.volavoile.net/index.php?showtopic=12194 et adapté pour Issoudun LFEK.">
 	<meta name="author" content="Marcos Ossedat, Baptiste DESPREZ, BFE, Billy, CPT, marc Terrier ...">
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,7 +46,7 @@
 		<!-- Any section element inside of this container is displayed as a slide -->
 		<div class="slides">
 			<script>
-				// le site notam de l'aviation civile n'accepte que 12 aérodromes maximum par requête.
+				// le site notamweb de l'aviation civile n'accepte que 12 aérodromes maximum par requête.
 				// en créant des secteurs d'un nombre maximum de 12 aérodromes, on arrive à nos fins.
 				// Ajoutez autant de secteurs que besoin.
 				var listeAeros = [
@@ -106,7 +106,7 @@
 				// Appel Ajax pour recup des cartes AZBA
 				function ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback) {
 					$.ajax({
-						url: "https://www.aeroclub-issoudun.fr/briefing/aci_azba.php",
+						url: "https://www.aeroclub-issoudun.fr/briefing/azba",
 						type: "GET",
 						dataType : "json"
 					})
@@ -117,7 +117,7 @@
 						if (typeof failureCallback !== 'undefined') { // si callback existe
 							failureCallback(); // appel du callback avec les param de l'appel en echec
 						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete /briefing/aci_azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+							alert( "Erreur sur requete https://www.aeroclub-issoudun.fr/briefing/azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
 						}
 					});
 				}
