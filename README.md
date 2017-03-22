@@ -18,26 +18,23 @@ Source des données
 API https://avwx.rest/documentation, dont on peut trouver les sources pas loin d'ici : https://github.com/flyinactor91/AVWX-Engine
 D'après les sources, les données sont issues de https://aviationweather.gov/adds/dataserver_current.
 
-### METEO
-
 ### NOTAM
-A COMPLETER
+Site web SIA : http://notamweb.aviation-civile.gouv.fr
+
+### Cartes AZBA
+Site web SIA : https://www.sia.aviation-civile.gouv.fr/schedules
+
+### METEO
+####Images satellites
+API sat24 : http://api.sat24.com/
+#### Sondages
+Meteociel : http://www.meteociel.fr/modeles/sondage2arome.php
 
 
 Reste à faire :
 -------------
 - Coder la récupération du SunSet, probablement en incorporant un JS utilisé ici : https://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
-- ...
+- cartes météo : pressions, vent, analyse fronts
+- Vérifier les échéances Arome pour les sondages Meteociel
+...
 
-
-*********************
-# This is an H1
-## This is an H2
-###### This is an H6
-
-This is also an H1
-==================
-
-This is also an H2
-------------------
-*********************

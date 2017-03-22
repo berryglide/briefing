@@ -130,84 +130,6 @@
 				<h3><script>document.write(day+'/'+month+'/'+year);</script></h3>
 			</section>
 
-			<!-- SATELLITE INFRAROUGE -->
-			<!-- les photos satellites sont chargées une à une et réassemblées en image animée avec la librairie gallery.css pour reveal.js -->
-			<section data-autoslide="11000">
-				<h4>Satellite infrarouge Europe</h4>
-				<ul class="gallery" data-interval="0.5" data-iterations="2">
-					<script>
-						var minutesat = minutes;
-						var hoursat = hours;
-						if(minutesat>=0){minutesat = '00';}
-						if(minutesat>=15){minutesat = '15';}
-						if(minutesat>=30){minutesat = '30';}
-						if(minutesat>=45){minutesat = '45';}
-		
-						var previousSat = function(){
-							if(minutesat=='00'){minutesat = '45'; hoursat--; if(hoursat.toString().length==1){var zero = '0'; hoursat = zero.concat(hoursat);}}
-							else{ 
-								if(minutesat=='15'){minutesat = '00';}
-								else{
-									if(minutesat=='30'){minutesat = '15';}
-									else{
-										if(minutesat=='45'){minutesat = '30';}
-									}
-								}
-							}
-						}
-		
-						var arrayImages = [];
-						for(i=0; i<10; i++){
-							arrayImages.push('<li><img src="http://fr.sat24.com/image?type=infraPolair&region=fr&timestamp='+ymd+hoursat+minutesat+ '"></li>');
-							previousSat();
-						}
-						for(j=arrayImages.length-1; j>0; j--){
-							document.write(arrayImages[j]);
-							if(j==1){document.write(arrayImages[j]); document.write(arrayImages[j]);}
-						}
-					</script>
-				</ul>
-			</section>
-
-			<!-- SATELLITE VISIBLE -->
-			<!-- les photos satellites sont chargées une à une et réassemblées en image animée avec la librairie gallery.css pour reveal.js -->
-			<section data-autoslide="11000">
-				<h4>Satellite visible France</h4>
-				<ul class="gallery" data-interval="0.5" data-iterations="2">
-					<script>
-						var minutesat = minutes;
-						var hoursat = hours;
-						if(minutesat>=0){minutesat = '00';}
-						if(minutesat>=15){minutesat = '15';}
-						if(minutesat>=30){minutesat = '30';}
-						if(minutesat>=45){minutesat = '45';}
-		
-						var previousSat = function(){
-							if(minutesat=='00'){minutesat = '45'; hoursat--; if(hoursat.toString().length==1){var zero = '0'; hoursat = zero.concat(hoursat);}}
-							else{ 
-								if(minutesat=='15'){minutesat = '00';}
-								else{
-									if(minutesat=='30'){minutesat = '15';}
-									else{
-										if(minutesat=='45'){minutesat = '30';}
-									}
-								}
-							}
-						}
-		
-						var arrayImages = [];
-						for(i=0; i<10; i++){
-							arrayImages.push('<li><img src="http://fr.sat24.com/image?type=visual&region=fr&timestamp='+ymd+hoursat+minutesat+ '"></li>');
-							previousSat();
-						}
-						for(j=arrayImages.length-1; j>0; j--){
-							document.write(arrayImages[j]);
-							if(j==1){document.write(arrayImages[j]); document.write(arrayImages[j]);}
-						}
-					</script>
-				</ul>
-			</section>
-
 			<!-- SAT24 GIF INFRAROUGE VISIBLE PRECIPITATIONS -->
 			<section>
 				<h4>SAT24 infrarouge</h4>
@@ -477,27 +399,30 @@
 				<script>
 					function successCallback(json) {
 						$.each(json.schedulesTable.azba, function(i, obj) {
-							//alert(i + ' ' + obj.time + ' ' + obj.href);
-							//$('#azbaContainer').append('<a href="' + obj.href + '">' + obj.time + '</a>');
-							$structure = '<div styles="width: 33%">'
-									+ '<a href="' + obj.href + '">' + obj.time + '</a>'
-									+ '<iframe src="' + obj.href + '#toolbar=0&amp;navpanes=0&amp;scrollbar=1" style="width: 100%; height:200px;" frameborder="0" scrolling="yes"></iframe>'
-									+ '</div>';
+							// exemple lien AZBA : https://www.sia.aviation-civile.gouv.fr/pub/media/store/documentstime/file/2017-03-22_1230-1600.pdf
+							var lienAzbaArray = obj.href.split("/");
+							var dateAzba = lienAzbaArray[lienAzbaArray.length-1].slice(0,10);
+							$structure = '<div style="padding:3px; width: 32%; float: left;">'
+										+ '<p style="margin : 0px;">' + dateAzba + '</p>'
+										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
+										+ '<iframe src="' + obj.href + '#toolbar=0&amp;navpanes=0&amp;scrollbar=1" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
+										+ '</div>';
 							$('#azbaContainer').append($structure);
 						});
 					}
 					function failureCallback() {
-						var msg = "cartes AZBA indisponibles";
+						var msg = "Cartes AZBA indisponibles. Vérifier sur le site du SIA :";
+						var urlAzbaSia = "https://www.sia.aviation-civile.gouv.fr/schedules";
 						$( "<p>" ).text( msg ).appendTo( "#azbaContainer" );
+						$('#azbaContainer').append('<a href="'+ urlAzbaSia + '" target="_blank">'+ urlAzbaSia + '</a>');
 					}
 					$(document).ready(function() {
 						ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback);
 					});
 				</script>
-					<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
-
-					</div>
-			</section>			
+				<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
+				</div>
+			</section>
 
 		</div>
 	</div>
