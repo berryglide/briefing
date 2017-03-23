@@ -196,7 +196,7 @@
 							}
 						}
 					}
-					function failureCallback(reportType, oaciCode) {
+					function tafMetarfailureCallback(reportType, oaciCode) {
 						var msg = reportType + " " + oaciCode + " indisponible";
 						if (reportType == 'metar') {
 							$( "<p>" ).text( msg ).appendTo( "#metarResult" );
@@ -211,8 +211,8 @@
 					}
 					$(document).ready(function() {
 						lireTafMetar('metar', ['LFLX'], qnhCallback);
-						lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, failureCallback);
-						lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, failureCallback);
+						lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
+						lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
 					});
 				</script>
 					<div id="qnhResult"></div>
@@ -397,7 +397,7 @@
 			<section>
 				<h4>CARTES AZBA</h4>
 				<script>
-					function successCallback(json) {
+					function azbaSuccessCallback(json) {
 						$.each(json.schedulesTable.azba, function(i, obj) {
 							// exemple lien AZBA : https://www.sia.aviation-civile.gouv.fr/pub/media/store/documentstime/file/2017-03-22_1230-1600.pdf
 							var lienAzbaArray = obj.href.split("/");
@@ -410,14 +410,14 @@
 							$('#azbaContainer').append($structure);
 						});
 					}
-					function failureCallback() {
+					function azbaFailureCallback() {
 						var msg = "Cartes AZBA indisponibles. Vérifier sur le site du SIA :";
 						var urlAzbaSia = "https://www.sia.aviation-civile.gouv.fr/schedules";
 						$( "<p>" ).text( msg ).appendTo( "#azbaContainer" );
 						$('#azbaContainer').append('<a href="'+ urlAzbaSia + '" target="_blank">'+ urlAzbaSia + '</a>');
 					}
 					$(document).ready(function() {
-						ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback);
+						ajaxAciAzbaApiCallWithCallback(azbaSuccessCallback, azbaFailureCallback);
 					});
 				</script>
 				<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
