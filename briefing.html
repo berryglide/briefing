@@ -144,32 +144,39 @@
 				<a href='http://fr.sat24.com/fr' target='sat24'><image src='http://api.sat24.com/animated/FR/rainTMC/3/Coordinated%20Universal%20Time/7245520' width=845 height=615></a>
 			</section>
 			
+			<!-- CARTE CHAMP DE PRESSION ET ANALYSE FRONT (METEO-FRANCE > meteo marine proche Atlantique) -->
+			<section>
+				<h4>Champ de pression surface Europe</h4>
+				<h5>A COMPLETER</h5>
+			</section>
 
-			<!-- SONDAGES -->
+			<!-- SONDAGES METEOCIEL AROME -->
+			<!-- échéance : 6h après le run AROME -->
+			<!-- Le modèle AROME est initialisé quatre fois par jour : run 00z – run 06z – run 12z – run 18z -->
 			<section>
 			<section>
 				<h4>Sondage modèle Arome - Météociel / Issoudun</h4>
-				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=12&map=1&wrf=0&region=&type=1&lat=46.888&lon=2.04" width="1024" height="768"></iframe>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=46.888&lon=2.04" width="1024" height="768"></iframe>
 			</section>
 		
 			<section>
 				<h4>Sondage modèle Arome - Météociel / Poitiers</h4>
-				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=12&map=1&wrf=0&region=&type=1&lat=46.569&lon=0.352" width="1024" height="768"></iframe>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=46.569&lon=0.352" width="1024" height="768"></iframe>
 			</section>
 		
 			<section>
 				<h4>Sondage modèle Arome - Météociel / Moulins</h4>
-				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=12&map=1&wrf=0&region=&type=1&lat=46.554&lon=3.478" width="1024" height="768"></iframe>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=46.554&lon=3.478" width="1024" height="768"></iframe>
 			</section>
 		
 			<section>
 				<h4>Sondage modèle Arome - Météociel / Joigny</h4>
-				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=12&map=1&wrf=0&region=&type=1&lat=47.994&lon=3.395" width="1024" height="768"></iframe>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=47.994&lon=3.395" width="1024" height="768"></iframe>
 			</section>
 
 			<section>
 				<h4>Sondage modèle Arome - Météociel / Le Mans</h4>
-				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=12&map=1&wrf=0&region=&type=1&lat=48.0&lon=0.2" width="1024" height="768"></iframe>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=48.0&lon=0.2" width="1024" height="768"></iframe>
 			</section>
 			</section>
 
@@ -179,7 +186,7 @@
 				<script>
 					function qnhCallback(json) {
 						updateQNH(json.Altimeter); // mise a jour du QNH dans le tableau des FL du jour (section suivante)
-						$( "<p>" ).text( 'QNH ' + json.Station  + ' : ' + json.Altimeter).appendTo( "#qnhResult" );
+						//$( "<p>" ).text( 'QNH ' + json.Station  + ' : ' + json.Altimeter).appendTo( "#qnhResult" );
 					}
 					function tafMetarCallback(json, reportType) {
 						if (reportType == 'metar') {
@@ -215,7 +222,7 @@
 						lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
 					});
 				</script>
-					<div id="qnhResult"></div>
+					<!-- <div id="qnhResult"></div> -->
 					<div id="tafMetarContainer" style="font-size: 0.6em; overflow:auto; height:500px;">
 						<div id="metarLFLX"></div>
 						<div id="metarLFOA"></div>
