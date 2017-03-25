@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="plugin/gallery/gallery.css">
 	<link rel="stylesheet" href="css/brief.css">
 	<script src="./js/jquery-3.1.1.min.js"></script>
-
+	<script src="./js/moment.min.js"></script>
 	<!-- Code syntax highlighting -->
 	<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -106,7 +106,7 @@
 				// Appel Ajax pour recup des cartes AZBA
 				function ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback) {
 					$.ajax({
-						url: "https://www.aeroclub-issoudun.fr/briefing/azba",
+						url: "https://www.aeroclub-issoudun.fr/briefing/api/1/aci_azba.php",
 						type: "GET",
 						dataType : "json"
 					})
@@ -117,11 +117,30 @@
 						if (typeof failureCallback !== 'undefined') { // si callback existe
 							failureCallback(); // appel du callback avec les param de l'appel en echec
 						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete https://www.aeroclub-issoudun.fr/briefing/azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+							alert( "Erreur sur requete https://www.aeroclub-issoudun.fr/briefing/api/1/aci_azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
 						}
 					});
 				}
-			</script>    
+
+				// Appel Ajax pour recup des cartes pression et front (source origine : Met Office)
+				function ajaxAciFrontApiCallWithCallback(successCallback, failureCallback) {
+					$.ajax({
+						url: "https://aeroclub-issoudun.fr/briefing/api/1/aci_fronts.php",
+						type: "GET",
+						dataType : "json"
+					})
+					.done(function( json ) { // en cas de succes
+						successCallback(json); // appel du callback avec le json resultat en param
+					})
+					.fail(function( xhr, statusText, errorThrown ) { // en cas d erreur
+						if (typeof failureCallback !== 'undefined') { // si callback existe
+							failureCallback(); // appel du callback avec les param de l'appel en echec
+						} else { // sinon (pas de callback) popup js de l'erreur
+							alert( "Erreur sur requete https://aeroclub-issoudun.fr/briefing/api/1/aci_fronts : - status:" + xhr.status + "\n - erreur:" + errorThrown);
+						}
+					});
+				}
+				</script>    
 
 			<!-- PREMIER SLIDE -->
 			<section>
@@ -144,11 +163,34 @@
 				<a href='http://fr.sat24.com/fr' target='sat24'><image src='http://api.sat24.com/animated/FR/rainTMC/3/Coordinated%20Universal%20Time/7245520' width=845 height=615></a>
 			</section>
 			
-			<!-- CARTE CHAMP DE PRESSION ET ANALYSE FRONT (METEO-FRANCE > meteo marine proche Atlantique) -->
-			<section>
-				<h4>Champ de pression surface Europe</h4>
-				<h5>A COMPLETER</h5>
-			</section>
+			<!-- CARTE CHAMP DE PRESSION ET FRONTS -->
+			<section id="frontSection">
+				<script>
+					function frontSuccessCallback(json) {
+						$.each(json.Product, function(i, obj) {
+							var validFromDate = moment(obj.ValidFrom).utc().format('DD-MM-YYYY HH:mm');
+							$structure = '<section>'
+										+ '<h4>Situation générale pression en surface et fronts</h4>'
+										+ '<a href="http://www.metoffice.gov.uk/public/weather/surface-pressure/" target="_blank">pour le ' + validFromDate + ' UTC</a>'
+										+ '<a href="http://www.metoffice.gov.uk/public/weather/surface-pressure/" target="_blank"><image class="noborder" src="' + obj.ProductURI + '" height="601" width="891"></a>'
+										+ '</section>';
+							$('#frontSection').append($structure);
+						});
+					}
+					function frontFailureCallback() {
+						var msg = "Cartes analyse et prévisions fronts du Met Office (UK) indisponibles. Vérifier sur le site du Met Office ou Meteo France :";
+						var urlMetOffice = "http://www.metoffice.gov.uk/public/weather/surface-pressure/";
+						var urlMeteoFrance = "http://www.meteofrance.com/previsions-meteo-marine/carte-frontologie/fronts/proche_atl";
+						$( "<p>" ).text( msg ).appendTo( "#frontContainer" );
+						$('#frontContainer').append('<a href="'+ urlMeteoFrance + '" target="_blank">'+ urlMeteoFrance + '</a>');
+						$('#frontContainer').append('<a href="'+ urlMetOffice + '" target="_blank">'+ urlMetOffice + '</a>');
+					}
+					$(document).ready(function() {
+						ajaxAciFrontApiCallWithCallback(frontSuccessCallback, frontFailureCallback);
+					});
+				</script>
+				<div id="frontContainer" style="font-size: 0.6em;"></div>
+			</section>			
 
 			<!-- SONDAGES METEOCIEL AROME -->
 			<!-- échéance : 6h après le run AROME -->
@@ -223,7 +265,7 @@
 					});
 				</script>
 					<!-- <div id="qnhResult"></div> -->
-					<div id="tafMetarContainer" style="font-size: 0.6em; overflow:auto; height:500px;">
+					<div id="tafMetarContainer" class="metartaf">
 						<div id="metarLFLX"></div>
 						<div id="metarLFOA"></div>
 						<div id="metarResult"></div>
@@ -409,10 +451,10 @@
 							// exemple lien AZBA : https://www.sia.aviation-civile.gouv.fr/pub/media/store/documentstime/file/2017-03-22_1230-1600.pdf
 							var lienAzbaArray = obj.href.split("/");
 							var dateAzba = lienAzbaArray[lienAzbaArray.length-1].slice(0,10);
-							$structure = '<div style="padding:3px; width: 32%; float: left;">'
-										+ '<p style="margin : 0px;">' + dateAzba + '</p>'
+							$structure = '<div style="width: 310px; float: left;">'
+										+ '<p>' + dateAzba + '</p>'
 										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
-										+ '<iframe src="' + obj.href + '#toolbar=0&amp;navpanes=0&amp;scrollbar=1" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
+										+ '<iframe src="' + obj.href + '" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
 										+ '</div>';
 							$('#azbaContainer').append($structure);
 						});
