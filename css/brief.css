@@ -1,3 +1,17 @@
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6  {
+	margin: 0;
+}
+
+.reveal p {
+	line-height: 1;
+	margin: 0;
+}
+
+.reveal section img {
+	border: 0;
+}
+
 .reveal section img.noborder {
 	border: 0;
 }
@@ -31,7 +45,10 @@
 .div_qnh {
     /*max-width:90%; */
     max-height:100%; 
-    height:650px; 
+    height:650px;
+}
+.div_qnh  p{
+	margin-top: 30px !important
 }
 
 .alti {
@@ -63,4 +80,14 @@
 .risques {
     font-size:25px;
     font-weight: bold;
+}
+
+.metartaf {
+	overflow:auto;
+	height:500px;
+}
+
+.metartaf p {
+	font-size: 0.8em;
+    margin: 20px 0;
 }
