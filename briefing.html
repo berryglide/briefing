@@ -67,22 +67,13 @@
 				];
 
 				// On initialise la date du jour pour tout le document
-				var date = new Date();
-				var timeSince1970 = date.getTime();
-				var seconds = date.getUTCSeconds();
-				var minutes = date.getUTCMinutes();
-				var hours = date.getUTCHours();
-				var day = date.getUTCDate();
-				var month = date.getUTCMonth()+1;
-				var year = date.getUTCFullYear();
-				// faisons en sorte que le premier janvier à 8 heures 2 minutes soit 01/01/2016 08:02, et non 1/1/2016 8:2  ;-)
-				if(hours.toString().length==1){var zero = '0'; hours = zero.concat(hours);}
-				if(minutes.toString().length==1){var zero = '0'; minutes = zero.concat(minutes);}
-				if(seconds.toString().length==1){var zero = '0'; seconds = zero.concat(seconds);}
-				if(month.toString().length==1){var zero = '0'; month = zero.concat(month);}
-				if(day.toString().length==1){var zero = '0'; day = zero.concat(day);}
-				// date au format yyyymmdd
-				var ymd = year.toString().concat(month.toString().concat(day.toString()));
+				var now = new Date();
+				var day = moment(now).utc().format('DD');
+				var month = moment(now).utc().format('MM');
+				var year = moment(now).utc().format('YYYY');
+				var time = moment(now).utc().format('HH : mm : ss');
+				var hours = moment(now).utc().format('HH');
+				var minutes = moment(now).utc().format('mm');
 
 				// Appel Ajax pour recup des TAF METAR
 				function ajaxAvwxApiCallWithCallback(reportType, oaciCode, successCallback, failureCallback) {
@@ -145,8 +136,8 @@
 			<!-- PREMIER SLIDE -->
 			<section>
 				<h1>Briefing LFEK</h1>
-				<h2>METEO & Information Aéronautique</h2>
-				<h3><script>document.write(day+'/'+month+'/'+year);</script></h3>
+				<h3>METEO<br>&amp;<br>Information Aeronautique</h3>
+				<h3><script>document.write(day+'-'+month+'-'+year+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+time+'&nbsp;UTC');</script></h3>
 			</section>
 
 			<!-- SAT24 GIF INFRAROUGE VISIBLE PRECIPITATIONS -->
