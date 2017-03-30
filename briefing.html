@@ -135,23 +135,55 @@
 
 			<!-- PREMIER SLIDE -->
 			<section>
-				<h1>Briefing LFEK</h1>
-				<h3>METEO<br>&amp;<br>Information Aeronautique</h3>
-				<h3><script>document.write(day+'-'+month+'-'+year+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+time+'&nbsp;UTC');</script></h3>
+				<section>
+					<h1>Briefing LFEK</h1>
+					<h3>METEO<br>&amp;<br>Information Aeronautique</h3>
+					<h3><script>document.write(day+'-'+month+'-'+year+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+time+'&nbsp;UTC');</script></h3>
+				</section>
+				<section>
+					<h3>Sommaire</h3>
+					<ol style="font-size: 0.8em;">
+						<li>Photo satellite infrarouge (SAT24)</li>
+						<li>Photo satellite visible (SAT24)</li>
+						<li>Image radar pluie (SAT24)</li>
+						<li>Carte des fronts et pression en surface, analyse et prévisions (Met. Office UK)</li>
+						<li>Sondages prévus du modèle Arome (Meteo-France via Meteociel)</li>
+						<li>METAR et TAF (AviationWeather USA)</li>
+						<li>Tableau de conversion FL <-> altitude QNH</li>
+						<li>NOTAM aérodromes et FIR (SIA)</li>
+						<li>Cartes AZBA (SIA)</li>
+						<li>Liens</li>
+					</ol>
+				</section>
 			</section>
 
+			<section>
+				<h4>Liens météo</h4>
+				<ul>
+					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">Briefing météo FFVV</a></li>
+					<li><a href="https://meteo-parapente.com/" target="mtoparapente">Météo Parapente</a></li>
+					<li><a href="http://www.meteociel.fr/modeles/arome.php" target="meteociel">Meteociel modèle AROME</a></li>
+					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
+				</ul>
+				<h4>Liens Information aéronautique</h4>
+				<ul>
+					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">SIA</a></li>
+					<li><a href="https://meteo-parapente.com/" target="mtoparapente">NOTAMWeb</a></li>
+				</ul>
+			</section>
+			
 			<!-- SAT24 GIF INFRAROUGE VISIBLE PRECIPITATIONS -->
 			<section>
 				<h4>SAT24 infrarouge</h4>
-				<a href='http://fr.sat24.com/fr' target='sat24'><image src='http://api.sat24.com/animated/FR/infraPolair/3/Coordinated%20Universal%20Time/5882000' width=845 height=615></a>
+				<a href="http://fr.sat24.com/fr" target="sat24"><image src='http://api.sat24.com/animated/FR/infraPolair/3/Coordinated%20Universal%20Time/5882000' width=845 height=615></a>
 			</section>
 			<section>
 				<h4>SAT24 visible</h4>
-				<a href='http://fr.sat24.com/fr' target='sat24'><image src='http://api.sat24.com/animated/FR/visual/3/Coordinated%20Universal%20Time/4768299' width=845 height=615></a>
+				<a href="http://fr.sat24.com/fr" target="sat24"><image src='http://api.sat24.com/animated/FR/visual/3/Coordinated%20Universal%20Time/4768299' width=845 height=615></a>
 			</section>
 			<section>
 				<h4>SAT24 pluie</h4>
-				<a href='http://fr.sat24.com/fr' target='sat24'><image src='http://api.sat24.com/animated/FR/rainTMC/3/Coordinated%20Universal%20Time/7245520' width=845 height=615></a>
+				<a href="http://fr.sat24.com/fr" target="sat24"><image src='http://api.sat24.com/animated/FR/rainTMC/3/Coordinated%20Universal%20Time/7245520' width=845 height=615></a>
 			</section>
 			
 			<!-- CARTE CHAMP DE PRESSION ET FRONTS -->
@@ -476,7 +508,7 @@
 			controls: true,
 			progress: true,
 			history: false,
-			center: true,
+			center: false,
 			touch: true,
 			mouseWheel: false,
 			loop: true,
