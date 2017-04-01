@@ -97,7 +97,7 @@
 				// Appel Ajax pour recup des cartes AZBA
 				function ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback) {
 					$.ajax({
-						url: "https://www.aeroclub-issoudun.fr/briefing/api/1/aci_azba.php",
+						url: "https://www.aeroclub-issoudun.fr/briefing/api/1/azba/",
 						type: "GET",
 						dataType : "json"
 					})
@@ -108,7 +108,7 @@
 						if (typeof failureCallback !== 'undefined') { // si callback existe
 							failureCallback(); // appel du callback avec les param de l'appel en echec
 						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete https://www.aeroclub-issoudun.fr/briefing/api/1/aci_azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+							alert( "Erreur sur requete https://www.aeroclub-issoudun.fr/briefing/api/1/azba : \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
 						}
 					});
 				}
@@ -116,7 +116,7 @@
 				// Appel Ajax pour recup des cartes pression et front (source origine : Met Office)
 				function ajaxAciFrontApiCallWithCallback(successCallback, failureCallback) {
 					$.ajax({
-						url: "https://aeroclub-issoudun.fr/briefing/api/1/aci_fronts.php",
+						url: "https://aeroclub-issoudun.fr/briefing/api/1/fronts/",
 						type: "GET",
 						dataType : "json"
 					})
@@ -127,7 +127,7 @@
 						if (typeof failureCallback !== 'undefined') { // si callback existe
 							failureCallback(); // appel du callback avec les param de l'appel en echec
 						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete https://aeroclub-issoudun.fr/briefing/api/1/aci_fronts : - status:" + xhr.status + "\n - erreur:" + errorThrown);
+							alert( "Erreur sur requete https://aeroclub-issoudun.fr/briefing/api/1/fronts : - status:" + xhr.status + "\n - erreur:" + errorThrown);
 						}
 					});
 				}
@@ -155,21 +155,6 @@
 						<li>Liens</li>
 					</ol>
 				</section>
-			</section>
-
-			<section>
-				<h4>Liens météo</h4>
-				<ul>
-					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">Briefing météo FFVV</a></li>
-					<li><a href="https://meteo-parapente.com/" target="mtoparapente">Météo Parapente</a></li>
-					<li><a href="http://www.meteociel.fr/modeles/arome.php" target="meteociel">Meteociel modèle AROME</a></li>
-					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
-				</ul>
-				<h4>Liens Information aéronautique</h4>
-				<ul>
-					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">SIA</a></li>
-					<li><a href="https://meteo-parapente.com/" target="mtoparapente">NOTAMWeb</a></li>
-				</ul>
 			</section>
 			
 			<!-- SAT24 GIF INFRAROUGE VISIBLE PRECIPITATIONS -->
@@ -496,6 +481,22 @@
 				</div>
 			</section>
 
+			<section>
+				<h4>Liens météo</h4>
+				<ul>
+					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">Briefing météo FFVV</a></li>
+					<li><a href="https://meteo-parapente.com/" target="mtoparapente">Météo Parapente</a></li>
+					<li><a href="http://www.meteociel.fr/modeles/arome.php" target="meteociel">Meteociel - modèle AROME</a></li>
+					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
+				</ul>
+				<br><br>
+				<h4>Liens Information aéronautique</h4>
+				<ul>
+					<li><a href="https://www.sia.aviation-civile.gouv.fr/" target="dgacsia">DGAC - Service Information Aéronautique</a></li>
+					<li><a href="http://notamweb.aviation-civile.gouv.fr/" target="mtoparapente">DGAC - NotamWeb</a></li>
+				</ul>
+			</section>
+
 		</div>
 	</div>
 
@@ -512,7 +513,8 @@
 			touch: true,
 			mouseWheel: false,
 			loop: true,
-
+			width: 1024,
+			height: 720,
 			transition: 'default', // none/fade/slide/convex/concave/zoom
 
 			// Optional reveal.js plugins
