@@ -267,7 +267,7 @@
 						}
 					}
 					$(document).ready(function() {
-						lireTafMetar('metar', ['LFLX'], qnhCallback);
+						lireTafMetar('metar', ['LFOA'], qnhCallback);
 						lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
 						lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
 					});
@@ -321,7 +321,7 @@
 				<h4>Table des Niveaux de Vol</h4>
 				<div class="div_qnh">
 					<div style="display:block;">
-						<p>QNH LFLX : <input type="text" id="qnh" class="big_input_qnh"/></p>
+						<p>QNH LFOA : <input type="text" id="qnh" class="big_input_qnh"/></p>
 						<p>Delta : <span id="delta"></span> m</p>
 						<table class="alti">
 							<tbody class="centre">
@@ -462,7 +462,7 @@
 							$structure = '<div style="width: 310px; float: left;">'
 										+ '<p>' + dateAzba + '</p>'
 										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
-										+ '<iframe src="' + obj.href + '" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
+										+ '<iframe src="' + obj.href + '#view=fitH" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
 										+ '</div>';
 							$('#azbaContainer').append($structure);
 						});
