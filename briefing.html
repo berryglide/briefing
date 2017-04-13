@@ -94,6 +94,44 @@
 					});
 				}
 
+				// Appel Ajax API ACI pour recup des METAR
+				function ajaxAciMetarApiCallWithCallback(oaciCode, successCallback, failureCallback) {
+					$.ajax({
+						url: "https://www.aeroclub-issoudun.fr/briefing/api/1/metar/?oaci=" + oaciCode ,
+						type: "GET",
+						dataType : "json"
+					})
+					.done(function(json) { // en cas de succes
+						successCallback(json, 'metar'); // appel du callback avec le json resultat en param
+					})
+					.fail(function( xhr, statusText, errorThrown ) { // en cas d erreur
+						if (typeof failureCallback !== 'undefined') { // si callback existe
+							failureCallback('metar', oaciCode); // appel du callback avec les param de l'appel en echec
+						} else { // sinon (pas de callback) popup js de l'erreur
+							alert( "Erreur sur requete  https://www.aeroclub-issoudun.fr/briefing/api/1/metar/?oaci=" + oaciCode + ": \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+						}
+					});
+				}
+
+				// Appel Ajax API ACI pour recup des TAF
+				function ajaxAciTafApiCallWithCallback(oaciCode, successCallback, failureCallback) {
+					$.ajax({
+						url: "https://www.aeroclub-issoudun.fr/briefing/api/1/taf/?oaci=" + oaciCode ,
+						type: "GET",
+						dataType : "json"
+					})
+					.done(function(json) { // en cas de succes
+						successCallback(json, 'taf'); // appel du callback avec le json resultat en param
+					})
+					.fail(function( xhr, statusText, errorThrown ) { // en cas d erreur
+						if (typeof failureCallback !== 'undefined') { // si callback existe
+							failureCallback('taf', oaciCode); // appel du callback avec les param de l'appel en echec
+						} else { // sinon (pas de callback) popup js de l'erreur
+							alert( "Erreur sur requete  https://www.aeroclub-issoudun.fr/briefing/api/1/metar/?oaci=" + oaciCode + ": \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+						}
+					});
+				}
+
 				// Appel Ajax pour recup des cartes AZBA
 				function ajaxAciAzbaApiCallWithCallback(successCallback, failureCallback) {
 					$.ajax({
@@ -236,7 +274,12 @@
 				<script>
 					function qnhCallback(json) {
 						updateQNH(json.Altimeter); // mise a jour du QNH dans le tableau des FL du jour (section suivante)
-						//$( "<p>" ).text( 'QNH ' + json.Station  + ' : ' + json.Altimeter).appendTo( "#qnhResult" );
+					}
+					function aciQnhCallback(json, reportType) {
+						$.each(json, function(i, obj) {
+							// convertir altim_in_hg : 1 in.hg = 33.8639 hPa
+							updateQNH(Math.round(obj.altim_in_hg*33.8639)); // mise a jour du QNH dans le tableau des FL du jour (section suivante)
+						});
 					}
 					function tafMetarCallback(json, reportType) {
 						if (reportType == 'metar') {
@@ -253,23 +296,51 @@
 							}
 						}
 					}
-					function tafMetarfailureCallback(reportType, oaciCode) {
+					function aciTafMetarCallback(json, reportType) {
+						$.each(json, function(i, obj) {
+							var raw = obj.raw_text;
+							var station = obj.station_id;
+							if (reportType == 'metar') {
+								if(station == 'LFLX' || station == 'LFOA') {
+									$( "<p>" ).text( raw ).appendTo( "#metar"+station );
+								} else {
+									$( "<p>" ).text( raw ).appendTo( "#metarResult" );
+								}
+							} else {
+								if(station == 'LFLX' || json.Station == 'LFOA') {
+									$( "<p>" ).text( raw ).appendTo( "#taf"+station );
+								} else {
+									$( "<p>" ).text( raw ).appendTo( "#tafResult" );
+								}
+							}
+						});
+					}
+					function tafMetarFailureCallback(reportType, oaciCode) {
 						var msg = reportType + " " + oaciCode + " indisponible";
-						if (reportType == 'metar') {
-							$( "<p>" ).text( msg ).appendTo( "#metarResult" );
-						} else {
-							$( "<p>" ).text( msg ).appendTo( "#tafResult" );
-						}
+						$( "<p>" ).text( msg ).appendTo( "#metarTafFailure" );
 					}
 					function lireTafMetar(reportType, tabOaci, successCallback, failCallback) {
 						for (var i = 0, len = tabOaci.length; i < len; i++) {
 							ajaxAvwxApiCallWithCallback(reportType, tabOaci[i], successCallback, failCallback);
 						}
 					}
+					function lireMetar(tabOaci, successCallback, failCallback) {
+						for (var i = 0, len = tabOaci.length; i < len; i++) {
+							ajaxAciMetarApiCallWithCallback(tabOaci[i], successCallback, failCallback);
+						}
+					}
+					function lireTaf(tabOaci, successCallback, failCallback) {
+						for (var i = 0, len = tabOaci.length; i < len; i++) {
+							ajaxAciTafApiCallWithCallback(tabOaci[i], successCallback, failCallback);
+						}
+					}
 					$(document).ready(function() {
-						lireTafMetar('metar', ['LFOA'], qnhCallback); // reference QNH du jour = AVORD
-						lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
-						lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarfailureCallback);
+						lireMetar(['LFOA'], aciQnhCallback); // reference QNH du jour = AVORD
+						lireMetar(['LFLX','LFOA','LFBI','LFOT'], aciTafMetarCallback, tafMetarFailureCallback);
+						//lireTaf('taf', ['LFLX','LFOA','LFBI','LFOT'], aciTafMetarCallback, tafMetarFailureCallback);
+						//lireTafMetar('metar', ['LFOA'], qnhCallback); // reference QNH du jour = AVORD
+						//lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarFailureCallback);
+						//lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarFailureCallback);
 					});
 				</script>
 					<!-- <div id="qnhResult"></div> -->
@@ -280,6 +351,7 @@
 						<div id="tafLFLX"></div>
 						<div id="tafLFOA"></div>
 						<div id="tafResult"></div>
+						<div id="metarTafFailure"></div>
 					</div>
 			</section>			
 
