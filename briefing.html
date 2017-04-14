@@ -75,25 +75,6 @@
 				var hours = moment(now).utc().format('HH');
 				var minutes = moment(now).utc().format('mm');
 
-				// Appel Ajax pour recup des TAF METAR
-				function ajaxAvwxApiCallWithCallback(reportType, oaciCode, successCallback, failureCallback) {
-					$.ajax({
-						url: "http://avwx.rest/api/" + reportType +"/" + oaciCode,
-						type: "GET",
-						dataType : "json"
-					})
-					.done(function( json ) { // en cas de succes
-						successCallback(json,reportType); // appel du callback avec le json resultat en param
-					})
-					.fail(function( xhr, statusText, errorThrown ) { // en cas d erreur
-						if (typeof failureCallback !== 'undefined') { // si callback existe
-							failureCallback(reportType, oaciCode); // appel du callback avec les param de l'appel en echec
-						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete  avwx.rest/api/" + reportType + "/" + oaciCode + ": \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
-						}
-					});
-				}
-
 				// Appel Ajax API ACI pour recup des METAR
 				function ajaxAciMetarApiCallWithCallback(oaciCode, successCallback, failureCallback) {
 					$.ajax({
@@ -127,7 +108,7 @@
 						if (typeof failureCallback !== 'undefined') { // si callback existe
 							failureCallback('taf', oaciCode); // appel du callback avec les param de l'appel en echec
 						} else { // sinon (pas de callback) popup js de l'erreur
-							alert( "Erreur sur requete  https://www.aeroclub-issoudun.fr/briefing/api/1/metar/?oaci=" + oaciCode + ": \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
+							alert( "Erreur sur requete  https://www.aeroclub-issoudun.fr/briefing/api/1/taf/?oaci=" + oaciCode + ": \n - status:" + xhr.status + "\n - erreur:" + errorThrown);
 						}
 					});
 				}
@@ -281,21 +262,6 @@
 							updateQNH(Math.round(obj.altim_in_hg*33.8639)); // mise a jour du QNH dans le tableau des FL du jour (section suivante)
 						});
 					}
-					function tafMetarCallback(json, reportType) {
-						if (reportType == 'metar') {
-							if(json.Station == 'LFLX' || json.Station == 'LFOA') {
-								$( "<p>" ).text( json["Raw-Report"] ).appendTo( "#metar"+json.Station );
-							} else {
-								$( "<p>" ).text( json["Raw-Report"] ).appendTo( "#metarResult" );
-							}
-						} else {
-							if(json.Station == 'LFLX' || json.Station == 'LFOA') {
-								$( "<p>" ).text( json["Raw-Report"] ).appendTo( "#taf"+json.Station );
-							} else {
-								$( "<p>" ).text( json["Raw-Report"] ).appendTo( "#tafResult" );
-							}
-						}
-					}
 					function aciTafMetarCallback(json, reportType) {
 						$.each(json, function(i, obj) {
 							var raw = obj.raw_text;
@@ -319,11 +285,6 @@
 						var msg = reportType + " " + oaciCode + " indisponible";
 						$( "<p>" ).text( msg ).appendTo( "#metarTafFailure" );
 					}
-					function lireTafMetar(reportType, tabOaci, successCallback, failCallback) {
-						for (var i = 0, len = tabOaci.length; i < len; i++) {
-							ajaxAvwxApiCallWithCallback(reportType, tabOaci[i], successCallback, failCallback);
-						}
-					}
 					function lireMetar(tabOaci, successCallback, failCallback) {
 						for (var i = 0, len = tabOaci.length; i < len; i++) {
 							ajaxAciMetarApiCallWithCallback(tabOaci[i], successCallback, failCallback);
@@ -337,10 +298,7 @@
 					$(document).ready(function() {
 						lireMetar(['LFOA'], aciQnhCallback); // reference QNH du jour = AVORD
 						lireMetar(['LFLX','LFOA','LFBI','LFOT'], aciTafMetarCallback, tafMetarFailureCallback);
-						//lireTaf('taf', ['LFLX','LFOA','LFBI','LFOT'], aciTafMetarCallback, tafMetarFailureCallback);
-						//lireTafMetar('metar', ['LFOA'], qnhCallback); // reference QNH du jour = AVORD
-						//lireTafMetar('metar', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarFailureCallback);
-						//lireTafMetar('taf', ['LFLX','LFOA','LFBI','LFOT'], tafMetarCallback, tafMetarFailureCallback);
+						lireTaf(['LFLX','LFOA','LFBI','LFOT'], aciTafMetarCallback, tafMetarFailureCallback);
 					});
 				</script>
 					<!-- <div id="qnhResult"></div> -->
