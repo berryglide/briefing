@@ -485,17 +485,29 @@
 				<h4>CARTES AZBA</h4>
 				<script>
 					function azbaSuccessCallback(json) {
+						var isAzbaToday = false;
 						$.each(json.schedulesTable.azba, function(i, obj) {
 							// exemple lien AZBA : https://www.sia.aviation-civile.gouv.fr/pub/media/store/documentstime/file/2017-03-22_1230-1600.pdf
 							var lienAzbaArray = obj.href.split("/");
 							var dateAzba = lienAzbaArray[lienAzbaArray.length-1].slice(0,10);
-							$structure = '<div style="width: 33%; float: left;">'
+
+							$structure = '<div style="width: 33%; display:inline-block;">'
 										+ '<p>' + dateAzba + '</p>'
 										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
 										+ '<iframe src="' + obj.href + '#view=fitH" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
 										+ '</div>';
-							$('#azbaContainer').append($structure);
+							if(moment(now).isSame(moment(dateAzba), 'day')) {
+								$('#todayAzba').append($structure);
+								isAzbaToday = true;
+							} else {
+								$('#followingDaysAzba').append($structure);
+							}
 						});
+						if (!isAzbaToday) {
+							$('#todayAzba').append('<div style="padding-top: 50px; height: 250px;">'
+												 + '<span style="font-size: 2em;">AUCUN AZBA POUR AUJOURDHUI<br>NO AZBA TODAY</span>'
+												 + '<br>voir plus bas pour les jours suivants<br>see below for following days</div>');
+						}
 					}
 					function azbaFailureCallback() {
 						var msg = "Cartes AZBA indisponibles. Vérifier sur le site du SIA :";
@@ -508,6 +520,8 @@
 					});
 				</script>
 				<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
+					<div id="todayAzba"></div>
+					<div id="followingDaysAzba"></div>
 				</div>
 			</section>
 
