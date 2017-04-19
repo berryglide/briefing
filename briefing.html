@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="plugin/gallery/gallery.css">
 	<link rel="stylesheet" href="css/brief.css">
 	<script src="./js/jquery-3.1.1.min.js"></script>
-	<script src="./js/moment.min.js"></script>
+	<script src="./js/moment-with-locales.min.js"></script>
 	<!-- Code syntax highlighting -->
 	<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -30,10 +30,6 @@
 		link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 		document.getElementsByTagName( 'head' )[0].appendChild( link );
 		
-		function sleep(miliseconds) {
-			var currentTime = new Date().getTime();
-			while (currentTime + miliseconds >= new Date().getTime()) {/* attendre ... */}
-		}
 	</script>
 
 	<!--[if lt IE 9]>
@@ -150,14 +146,31 @@
 						}
 					});
 				}
-				</script>    
+			</script>    
 
 			<!-- PREMIER SLIDE -->
 			<section>
 				<section>
+					<script>
+						//var dateTitleDay = null, dateTitleTime = null, date = null;
+						var update = function () {
+							date = moment(new Date())
+							$('#dateTitleTime').html(date.format('HH:mm:ss'));
+						};
+						$(document).ready(function(){
+							//dateTitleDay = $('#dateTitleDay')
+							//dateTitleTime = $('#dateTitleTime')
+							$('#dateTitleDay').html(moment(now).locale('fr').format('dddd Do MMMM YYYY'));
+							update();
+							setInterval(update, 1000);
+						});
+					</script>
 					<h1>Briefing LFEK</h1>
 					<h3>METEO<br>&amp;<br>Information Aeronautique</h3>
-					<h3><script>document.write(day+'-'+month+'-'+year+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+time+'&nbsp;UTC');</script></h3>
+					<br>
+					<h3 id="dateTitleDay"></h3>
+					<h3 id="dateTitleTime" style="font-family: monospace;"></h3>
+					<!-- <script>document.write(day+'-'+month+'-'+year+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+time+'&nbsp;UTC');</script> -->
 				</section>
 				<section>
 					<h3>Sommaire</h3>
@@ -531,6 +544,7 @@
 					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">Briefing météo FFVV</a></li>
 					<li><a href="https://meteo-parapente.com/" target="mtoparapente">Météo Parapente</a></li>
 					<li><a href="http://www.meteociel.fr/modeles/arome.php" target="meteociel">Meteociel - modèle AROME</a></li>
+					<li><a href="https://www.topmeteo.eu/weather/gliding!charts" target="topmeteo">TopMeteo (accès protégé)</a></li>
 					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
 				</ul>
 				<br><br>
