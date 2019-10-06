@@ -261,6 +261,24 @@
 			</section>
 			</section>
 
+			<!-- CARTES DES VENTS -->
+			<section>
+				<h4>Carte des vents à 12H UTC à 10m</h4>
+				<img src="http://www.ac-sologne.fr/briefing/aeroweb/regionalfrancewind-pmer-10m12H.png" style="max-width:100%; max-height:100%; height:620px">
+			</section>
+			<section>
+				<h4>Carte des vents à 12H UTC à 1500m</h4>
+				<img src="http://www.ac-sologne.fr/briefing/aeroweb/regionalfrancewind-fl05012H.png" style="max-width:100%; max-height:100%; height:620px">
+			</section>
+			<section>
+				<h4>Carte des vents à 15H UTC à 10m</h4>
+				<img src="http://www.ac-sologne.fr/briefing/aeroweb/regionalfrancewind-pmer-10m15H.png" style="max-width:100%; max-height:100%; height:620px">
+			</section>
+			<section>
+				<h4>Carte des vents à 15H UTC à 1500m</h4>
+				<img src="http://www.ac-sologne.fr/briefing/aeroweb/regionalfrancewind-fl05015H.png" style="max-width:100%; max-height:100%; height:620px">
+			</section>
+			
 			<!-- METAR et TAF -->
 			<section>
 				<h4>QNH - METAR - TAF</h4>
@@ -419,9 +437,11 @@
 							+'                        <input type="hidden" name="AERO_Date_HEURE" value="'+hours+':'+minutes+'">'
 							+'                        <input type="hidden" name="AERO_Langue" value="FR">'
 							+'                        <input type="hidden" name="AERO_Duree" value=12>'
-							+'                        <input type="hidden" name="AERO_CM_REGLE" value=1>'
+							+'                        <input type="hidden" name="AERO_CM_REGLE" value=3>'
 							+'                        <input type="hidden" name="AERO_CM_GPS" value=2>'
 							+'                        <input type="hidden" name="AERO_CM_INFO_COMP" value=1>'
+							+'                        <input type="hidden" name="AERO_Rayon" value=10>'
+							+'                        <input type="hidden" name="AERO_Plafond" value=30>'
 							+'                        '+listeInputAeros(listelisteAeros[j])+''
 							+'                    </form>'
 							+'                    '
@@ -472,7 +492,7 @@
 						+' <input type="hidden" name="FIR_CM_GPS" value=2>'
 						+' <input type="hidden" name="FIR_CM_INFO_COMP" value=1>'
 						+' <input type="hidden" name="FIR_NivMin" value=0>'
-						+' <input type="hidden" name="FIR_NivMax" value=200>'
+						+' <input type="hidden" name="FIR_NivMax" value=100>'
 						+' '+listeInputFIR(listelisteFIR[j])+''
 						+' </form>'
 						+' '
@@ -540,11 +560,11 @@
 			<section>
 				<h4>Liens météo</h4>
 				<ul>
+					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
+					<li><a href="https://skysight.io/" target="skysignt">Skysight (accès protégé)</a></li>
 					<li><a href="http://francois.hersen.pagesperso-orange.fr/BriefingMTO.htm" target="briefingFFVV">Briefing météo FFVV</a></li>
 					<li><a href="https://meteo-parapente.com/" target="mtoparapente">Météo Parapente</a></li>
 					<li><a href="http://www.meteociel.fr/modeles/arome.php" target="meteociel">Meteociel - modèle AROME</a></li>
-					<li><a href="https://www.topmeteo.eu/weather/gliding!charts" target="topmeteo">TopMeteo (accès protégé)</a></li>
-					<li><a href="https://aviation.meteo.fr/login.php" target="aeroweb">Aeroweb - Météo-France (accès protégé)</a></li>
 				</ul>
 				<br><br>
 				<h4>Liens Information aéronautique</h4>
