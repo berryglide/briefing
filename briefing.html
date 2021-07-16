@@ -246,6 +246,11 @@
 			</section>
 		
 			<section>
+				<h4>Sondage modèle Arome - Météociel / Aubusson</h4>
+				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=45.931&lon=2.182" width="1024" height="768"></iframe>
+			</section>
+		
+			<section>
 				<h4>Sondage modèle Arome - Météociel / Moulins</h4>
 				<iframe scrolling="auto" src="http://www.meteociel.fr/modeles/sondage2arome.php?archive=0&ech=6&map=1&wrf=0&region=&type=1&lat=46.554&lon=3.478" width="1024" height="768"></iframe>
 			</section>
@@ -516,6 +521,10 @@
 			<section>
 				<h4>CARTES AZBA</h4>
 				<script>
+					$(document).ready(function(){
+						$('#azbaDateToday').append(moment(now).locale('fr').format('dddd Do MMMM YYYY'));
+					});
+					
 					function azbaSuccessCallback(json) {
 						var isAzbaToday = false;
 						$.each(json.schedulesTable.azba, function(i, obj) {
@@ -523,10 +532,11 @@
 							var lienAzbaArray = obj.href.split("/");
 							var dateAzba = lienAzbaArray[lienAzbaArray.length-1].slice(0,10);
 
-							$structure = '<div style="width: 33%; display:inline-block;">'
+							$structure = '<div style="display:block; padding-top: 10px;">'
 										+ '<p>' + dateAzba + '</p>'
 										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
-										+ '<iframe src="' + obj.href + '#view=fitH" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
+										// Suppression Iframe des PDF car X-Frame-Options=sameorigin interdit l'affichage
+										//+ '<iframe src="' + obj.href + '#view=fitH" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
 										+ '</div>';
 							if(moment(now).isSame(moment(dateAzba), 'day')) {
 								$('#todayAzba').append($structure);
@@ -536,7 +546,7 @@
 							}
 						});
 						if (!isAzbaToday) {
-							$('#todayAzba').append('<div style="padding-top: 50px; height: 250px;">'
+							$('#todayAzba').append('<div style="padding-top: 30px; height: 250px;">'
 												 + '<span style="font-size: 2em;">AUCUN AZBA POUR AUJOURDHUI<br>NO AZBA TODAY</span>'
 												 + '<br>voir plus bas pour les jours suivants<br>see below for following days</div>');
 						}
@@ -552,7 +562,11 @@
 					});
 				</script>
 				<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
+					<br>
+					<h5 id="azbaDateToday">Aujourd'hui </h5>
 					<div id="todayAzba"></div>
+					<br>
+					<h5 id="azbaDateFollowingDays">Jours suivants</h5>
 					<div id="followingDaysAzba"></div>
 				</div>
 			</section>
