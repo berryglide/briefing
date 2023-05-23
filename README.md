@@ -33,8 +33,8 @@ Meteociel : http://www.meteociel.fr/modeles/sondage2arome.php
 
 Reste à faire :
 -------------
+- Corriger la vuln sur moment.js
 - Coder la récupération du SunSet, probablement en incorporant un JS utilisé ici : https://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
-- cartes météo : pressions, vent, analyse fronts
 - Vérifier les échéances Arome pour les sondages Meteociel
 ...
 
