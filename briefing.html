@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Dev briefing LFEK</title>
+	<title>Briefing LFEK</title>
 
 	<meta name="description" content="Une collecte automatique de données météo et infos aeronautiques, extrait de ce qu'on peut trouver sur http://www.volavoile.net/index.php?showtopic=12194 et adapté pour Issoudun LFEK.">
 	<meta name="author" content="Marcos Ossedat, Baptiste DESPREZ, BFE, Billy, CPT, marc Terrier ...">
@@ -170,6 +170,9 @@
 					<br>
 					<h3 id="dateTitleDay"></h3>
 					<h3 id="dateTitleTime" style="font-family: monospace;"></h3>
+					<br>
+					<h3 id="freq">LFEK frequence : <span style="font-family: monospace; color: red;">119.885</span> MHz</h3>
+
 				</section>
 				<section>
 					<h3>Sommaire</h3>
@@ -181,8 +184,8 @@
 						<li>Sondages prévus du modèle Arome (Meteo-France via Meteociel)</li>
 						<li>METAR et TAF (AviationWeather USA)</li>
 						<li>Tableau de conversion FL <-> altitude QNH</li>
-						<li>NOTAM aérodromes et FIR (SIA)</li>
-						<li>Cartes AZBA (SIA)</li>
+						<li>NOTAM (renvoi vers Notaminfo ou SIA)</li>
+						<li>Cartes AZBA (renvoi vers SIA)</li>
 						<li>Liens</li>
 					</ol>
 				</section>
@@ -416,158 +419,35 @@
 			</section>
 
 			<!-- NOTAM AERO -->
-			<script>
-				var listeInputAeros = function(listeAerosRegionale){
-					var ll = '';
-						for(i=0; i<listeAerosRegionale.liste.length; i++){
-							ll=ll+'<input type="hidden" name="AERO_Tab_Aero['+i+']" value="'+listeAerosRegionale.liste[i]+'">';
-						}
-						return ll;
-				}
-		
-				var sectionNotam = function(listelisteAeros){
-					var modeAffichage = ['RESUME','COMPLET'];
-					for(j=0;j<listelisteAeros.length;j++){
-						document.write('<section>');
-						for(k=0; k<modeAffichage.length; k++){
-							document.write(''
-							+'                <section>'
-							+'                    <h4>Notams  <b>'+listelisteAeros[j].nom+'</b>  '+modeAffichage[k]+'</h4>'
-							+'                    '
-							+'                    <form id="notam'+listelisteAeros[j].nom+modeAffichage[k]+'" action="http://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php?Langue=FR" target="iframe'+listelisteAeros[j].nom+modeAffichage[k]+'" method="post">'
-							+'                        <input type="hidden" name="bResultat" value=true>'
-							+'                        <input type="hidden" name="bImpression" value="">'
-							+'                        <input type="hidden" name="ModeAffichage" value="'+modeAffichage[k]+'">'
-							+'                        <input type="hidden" name="AERO_Date_DATE" value="'+year+'/'+month+'/'+day+'">'
-							+'                        <input type="hidden" name="AERO_Date_HEURE" value="'+hours+':'+minutes+'">'
-							+'                        <input type="hidden" name="AERO_Langue" value="FR">'
-							+'                        <input type="hidden" name="AERO_Duree" value=12>'
-							+'                        <input type="hidden" name="AERO_CM_REGLE" value=3>'
-							+'                        <input type="hidden" name="AERO_CM_GPS" value=2>'
-							+'                        <input type="hidden" name="AERO_CM_INFO_COMP" value=1>'
-							+'                        <input type="hidden" name="AERO_Rayon" value=10>'
-							+'                        <input type="hidden" name="AERO_Plafond" value=30>'
-							+'                        '+listeInputAeros(listelisteAeros[j])+''
-							+'                    </form>'
-							+'                    '
-							+'                    <iframe scrolling="auto" name="iframe'+listelisteAeros[j].nom+modeAffichage[k]+'" src="http://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php?Langue=FR" width="1024" height="650px"></iframe>'
-							+'                    '
-							+'                </section>'
-							+'                            ');
-						}
-					document.write('</section>');    
-					}
-		
-					for(j=0;j<listelisteAeros.length;j++){
-						for(k=0; k<modeAffichage.length; k++){
-							document.getElementById('notam'+listelisteAeros[j].nom+modeAffichage[k]).submit();
-						}
-					}
-				}
-				sectionNotam(listeAeros);
-			</script>
-
-			<!-- NOTAM FIR -->
-			<script>
-				var listeInputFIR = function(listeFIRRegionale){
-					var ll = '';
-					for(i=0; i<listeFIRRegionale.liste.length; i++){
-						ll=ll+'<input type="hidden" name="FIR_Tab_Fir['+i+']" value="'+listeFIRRegionale.liste[i]+'">';
-					}
-					return ll;
-				}
-				var sectionNotamFIR = function(listelisteFIR){
-					var modeAffichage = ['RESUME','COMPLET'];
-					for(j=0;j<listelisteFIR.length;j++){
-					document.write('<section>');
-					for(k=0; k<modeAffichage.length; k++){
-						document.write(''
-						+' <section>'
-						+' <h4>Notams <b>'+listelisteFIR[j].nom+'</b> '+modeAffichage[k]+'</h4>'
-						+' '
-						+' <form id="notam'+listelisteFIR[j].nom+modeAffichage[k]+'" action="http://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_FIR.php" target="iframe'+listelisteFIR[j].nom+modeAffichage[k]+'" method="post">'
-						+' <input type="hidden" name="bResultat" value=true>'
-						+' <input type="hidden" name="bImpression" value="">'
-						+' <input type="hidden" name="ModeAffichage" value="'+modeAffichage[k]+'">'
-						+' <input type="hidden" name="FIR_Date_DATE" value="'+year+'/'+month+'/'+day+'">'
-						+' <input type="hidden" name="FIR_Date_HEURE" value="'+hours+':'+minutes+'">'
-						+' <input type="hidden" name="FIR_Langue" value="FR">'
-						+' <input type="hidden" name="FIR_Duree" value=12>'
-						+' <input type="hidden" name="FIR_CM_REGLE" value=3>'
-						+' <input type="hidden" name="FIR_CM_GPS" value=2>'
-						+' <input type="hidden" name="FIR_CM_INFO_COMP" value=1>'
-						+' <input type="hidden" name="FIR_NivMin" value=0>'
-						+' <input type="hidden" name="FIR_NivMax" value=100>'
-						+' '+listeInputFIR(listelisteFIR[j])+''
-						+' </form>'
-						+' '
-						+' <iframe scrolling="auto" name="iframe'+listelisteFIR[j].nom+modeAffichage[k]+'" src="http://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_FIR.php" width="1024" height="650px"></iframe>'
-						+' '
-						+' </section>'
-						+' ');
-					}
-					document.write('</section>');
-				}
-				for(j=0;j<listelisteFIR.length;j++){
-					for(k=0; k<modeAffichage.length; k++){
-					document.getElementById('notam'+listelisteFIR[j].nom+modeAffichage[k]).submit();
-					}
-				}
-				}
-				sectionNotamFIR(listeFIR);
-			</script>
+			<section>
+				<h4>NOTAM</h4>
+				<div id="notamContainer">
+					<div style="display:block;">
+						<ol style="font-size: 0.8em;">
+							<li><a href="https://notaminfo.com/francemap" title="lien externe vers Notaminfo" target="NOTAMINFO">NOTAM INFO - carte France (lien externe)</a></li>
+							<li><a href="https://sofia-briefing.aviation-civile.gouv.fr/sofia/pages/prepavol.html" title="lien externe vers Notaminfo" target="NOTAMINFO">SIA Sofia Briefing (lien externe)</li>
+						</ol>
+					</div>
+				</div>
+			</section>
 
 			<!-- CARTES AZBA -->
 			<section>
-				<h4>CARTES AZBA</h4>
-				<script>
-					$(document).ready(function(){
-						$('#azbaDateToday').append(moment(now).locale('fr').format('dddd Do MMMM YYYY'));
-					});
-					
-					function azbaSuccessCallback(json) {
-						var isAzbaToday = false;
-						$.each(json.schedulesTable.azba, function(i, obj) {
-							// exemple lien AZBA : https://www.sia.aviation-civile.gouv.fr/pub/media/store/documentstime/file/2017-03-22_1230-1600.pdf
-							var lienAzbaArray = obj.href.split("/");
-							var dateAzba = lienAzbaArray[lienAzbaArray.length-1].slice(0,10);
-
-							$structure = '<div style="display:block; padding-top: 10px;">'
-										+ '<p>' + dateAzba + '</p>'
-										+ '<a href="' + obj.href + '" target="_blank">' + obj.time + '</a>'
-										// Suppression Iframe des PDF car X-Frame-Options=sameorigin interdit l'affichage
-										//+ '<iframe src="' + obj.href + '#view=fitH" style="width: 100%; height:320px;" frameborder="0" scrolling="yes"></iframe>'
-										+ '</div>';
-							if(moment(now).isSame(moment(dateAzba), 'day')) {
-								$('#todayAzba').append($structure);
-								isAzbaToday = true;
-							} else {
-								$('#followingDaysAzba').append($structure);
-							}
-						});
-						if (!isAzbaToday) {
-							$('#todayAzba').append('<div style="padding-top: 30px; height: 250px;">'
-												 + '<span style="font-size: 2em;">AUCUN AZBA POUR AUJOURDHUI<br>NO AZBA TODAY</span>'
-												 + '<br>voir plus bas pour les jours suivants<br>see below for following days</div>');
-						}
-					}
-					function azbaFailureCallback() {
-						var msg = "Cartes AZBA indisponibles. Vérifier sur le site du SIA :";
-						var urlAzbaSia = "https://www.sia.aviation-civile.gouv.fr/schedules";
-						$( "<p>" ).text( msg ).appendTo( "#azbaContainer" );
-						$('#azbaContainer').append('<a href="'+ urlAzbaSia + '" target="_blank">'+ urlAzbaSia + '</a>');
-					}
-					$(document).ready(function() {
-						ajaxAciAzbaApiCallWithCallback(azbaSuccessCallback, azbaFailureCallback);
-					});
-				</script>
-				<div id="azbaContainer" style="font-size: 0.6em; overflow:auto; height:650px;">
-					<br>
-					<h5 id="azbaDateToday">Aujourd'hui </h5>
-					<div id="todayAzba"></div>
-					<br>
-					<h5 id="azbaDateFollowingDays">Jours suivants</h5>
-					<div id="followingDaysAzba"></div>
+				<h4>AZBA - zones basses altitudes</h4>
+				<div id="azbaContainer">
+					<div style="font-size: 0.8em;">
+						<p>Activations : <a href="https://www.sia.aviation-civile.gouv.fr/schedules" title="lien externe vers SIA AZBA" target="NOTAM SIA">lien vers la page AZBA du SIA</a></p>
+						<br>
+						<p>Modifications zones AZBA en 2023</p>
+						<div style="font-size: 0.8em;">
+							<p>Ajouts de zones basses altitudes passant au sud de LFEK :</p>
+							<ol>
+								<li>R145 A - SFC / 5500 AMSL</li>
+								<li>R145 B - SFC / 4500 AMSL</li>
+								<li>A COMPLETER</li>
+							</ol>
+						</div>
+					</div>
 				</div>
 			</section>
 

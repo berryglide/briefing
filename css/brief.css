@@ -91,3 +91,17 @@
 	font-size: 0.8em;
     margin: 30px 0;
 }
+
+#notamContainer div {
+	margin-top: 50px;
+}
+#notamContainer li {
+	margin-bottom: 15px;
+}
+
+#azbaContainer div {
+	margin-top: 50px;
+}
+#azbaContainer li {
+	margin-bottom: 15px;
+}

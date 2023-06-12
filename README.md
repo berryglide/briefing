@@ -19,10 +19,10 @@ API https://avwx.rest/documentation, dont on peut trouver les sources pas loin d
 D'après les sources, les données sont issues de https://aviationweather.gov/adds/dataserver_current.
 
 ### NOTAM
-Site web SIA : http://notamweb.aviation-civile.gouv.fr
+2023 : renvoi vers SIA xxxxxxxxx et vers Notaminfo : https://notaminfo.com/francemap
 
 ### Cartes AZBA
-Site web SIA : https://www.sia.aviation-civile.gouv.fr/schedules
+2023 : renvoi vers SIA : https://www.sia.aviation-civile.gouv.fr/schedules (utiliser Chrome)
 
 ### METEO
 #### Images satellites
@@ -33,8 +33,6 @@ Meteociel : http://www.meteociel.fr/modeles/sondage2arome.php
 
 Reste à faire :
 -------------
-- Corriger la vuln sur moment.js
 - Coder la récupération du SunSet, probablement en incorporant un JS utilisé ici : https://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
-- Vérifier les échéances Arome pour les sondages Meteociel
-...
+
 
